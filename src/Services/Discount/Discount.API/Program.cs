@@ -1,4 +1,4 @@
-using Catalog.API.Repositories;
+using Discount.API.Repositories;
 using Discount.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
