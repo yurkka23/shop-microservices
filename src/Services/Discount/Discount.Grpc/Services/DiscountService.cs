@@ -1,4 +1,7 @@
 ﻿using Discount.Grpc.Protos;
+using AutoMapper;
+using Discount.Grpc.Entities;
+using Discount.Grpc.Repositories;
 
 namespace Discount.Grpc.Services;
 
@@ -15,7 +18,7 @@ public class DiscountService : DiscountProtoService.DiscountProtoServiceBase
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public override async Task<CouponModel> GetDiscount(GetDiscountRequest request, ServerCallContext context)
+    public override async Task<CouponModel> GetDiscount(GetDiscountRequest request)
     {
         var coupon = await _repository.GetDiscount(request.ProductName);
         if (coupon == null)
@@ -28,7 +31,7 @@ public class DiscountService : DiscountProtoService.DiscountProtoServiceBase
         return couponModel;
     }
 
-    public override async Task<CouponModel> CreateDiscount(CreateDiscountRequest request, ServerCallContext context)
+    public override async Task<CouponModel> CreateDiscount(CreateDiscountRequest request)
     {
         var coupon = _mapper.Map<Coupon>(request.Coupon);
 
@@ -39,7 +42,7 @@ public class DiscountService : DiscountProtoService.DiscountProtoServiceBase
         return couponModel;
     }
 
-    public override async Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
+    public override async Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request)
     {
         var coupon = _mapper.Map<Coupon>(request.Coupon);
 
@@ -50,7 +53,7 @@ public class DiscountService : DiscountProtoService.DiscountProtoServiceBase
         return couponModel;
     }
 
-    public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
+    public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request)
     {
         var deleted = await _repository.DeleteDiscount(request.ProductName);
         var response = new DeleteDiscountResponse
